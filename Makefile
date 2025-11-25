@@ -1,4 +1,4 @@
-.PHONY: setup clean help
+.PHONY: setup clean test help
 
 # Default target
 help:
@@ -8,6 +8,12 @@ help:
 	@echo "  lint    - Run linting checks"
 	@echo "  clean   - Clean up temporary files"
 	@echo "  help    - Show this help message"
+
+# Run tests
+test:
+	@echo "🧪 Running tests..."
+	source .venv/bin/activate || true; \
+	python -m pytest -sv --cov-report term-missing --cov-report html:coverage_report --cov-report xml:coverage_report/cov.xml --junitxml=coverage_report/pytest.xml --cov=court_pipeline/ --disable-warnings -p no:cacheprovider tests/*
 
 # Initialize development environment
 setup:
