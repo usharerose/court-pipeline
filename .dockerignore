@@ -1,0 +1,28 @@
+# Git
+.git
+.gitattributes
+.gitignore
+
+# Github
+.github
+
+# Jetbrains
+.idea
+
+# Python virtualenvs
+.venv
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/

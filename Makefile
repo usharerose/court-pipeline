@@ -23,6 +23,19 @@ setup:
 	poetry run pre-commit install --hook-type pre-commit --hook-type commit-msg
 	@echo "✅ Setup complete! Environment and hooks are ready."
 
+build: clean
+	docker compose build court-pipeline-build
+
+run: build clean-container
+	docker compose up -d court-pipeline-run
+
+ssh:
+	docker compose exec court-pipeline-run /bin/sh
+
+clean-container:
+	# stop and remove useless containers
+	docker compose down --remove-orphans
+
 # Clean up temporary files
 clean:
 	@echo "🧹 Cleaning up..."
