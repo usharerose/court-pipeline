@@ -14,10 +14,6 @@ class S3MixIn(ABC):
     Subclasses define bucket-specific behavior.
     """
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
-        self._s3_client: Optional[Minio] = None
-
     @property
     @abstractmethod
     def bucket_name(self) -> str:
@@ -38,14 +34,16 @@ class S3MixIn(ABC):
 
     @property
     def s3_client(self) -> Minio:
-        if self._s3_client is None:
-            self._s3_client = Minio(
+        _s3_client = getattr(self, '_s3_client', None)
+        if _s3_client is None:
+            _s3_client = Minio(
                 endpoint=os.getenv('S3_ENDPOINT', 'localhost:9000'),
                 access_key=os.getenv('S3_ACCESS_KEY', 'minioadmin'),
                 secret_key=os.getenv('S3_SECRET_KEY', 'minioadmin'),
                 secure=os.getenv('S3_SECURE', 'false').lower() == 'true'
             )
-        return self._s3_client
+            setattr(self, '_s3_client', _s3_client)
+        return _s3_client
 
     async def create_bucket(self) -> None:
 
